@@ -97,8 +97,11 @@ WITH
 	CLUSTERED COLUMNSTORE INDEX
 )
 GO
-INSERT INTO [a_prokopenko_schema].[Vendor] (ID, Name) VALUES (1, 'Creative Mobile Technologies, LLC');
-INSERT INTO [a_prokopenko_schema].[Vendor] (ID, Name) VALUES (2, 'VeriFone Inc');
+INSERT INTO a_prokopenko_schema.Vendor (ID, Name)
+SELECT 1, 'Creative Mobile Technologies, LLC'
+UNION ALL
+SELECT 2, 'VeriFone Inc.';
+
 
 Created table RateCode
 SET ANSI_NULLS ON
@@ -116,12 +119,18 @@ WITH
 	CLUSTERED COLUMNSTORE INDEX
 )
 GO
-INSERT INTO [a_prokopenko_schema].[RateCode] (ID, Name) VALUES (1, 'Standard rate');
-INSERT INTO [a_prokopenko_schema].[RateCode] (ID, Name) VALUES (2, 'JFK');
-INSERT INTO [a_prokopenko_schema].[RateCode] (ID, Name) VALUES (3, 'Newark');
-INSERT INTO [a_prokopenko_schema].[RateCode] (ID, Name) VALUES (4, 'Nassau or Westchester');
-INSERT INTO [a_prokopenko_schema].[RateCode] (ID, Name) VALUES (5, 'Negotiated fare');
-INSERT INTO [a_prokopenko_schema].[RateCode] (ID, Name) VALUES (6, 'Group ride');
+INSERT INTO a_prokopenko_schema.RateCode (ID, Name)
+SELECT 1, 'Standard rate'
+UNION ALL
+SELECT 2, 'JFK'
+UNION ALL
+SELECT 3, 'Newark'
+UNION ALL
+SELECT 4, 'Nassau or Westchester'
+UNION ALL
+SELECT 5, 'Negotiated fare'
+UNION ALL
+SELECT 6, 'Group ride';
 
 Created table Payment_type
 SET ANSI_NULLS ON
@@ -139,9 +148,16 @@ WITH
 	CLUSTERED COLUMNSTORE INDEX
 )
 GO
-INSERT INTO [a_prokopenko_schema].[Payment_type] (ID, Name) VALUES (1, 'Credit card');
-INSERT INTO [a_prokopenko_schema].[Payment_type] (ID, Name) VALUES (2, 'Cash');
-INSERT INTO [a_prokopenko_schema].[Payment_type] (ID, Name) VALUES (3, 'No charge');
-INSERT INTO [a_prokopenko_schema].[Payment_type] (ID, Name) VALUES (4, 'Dispute');
-INSERT INTO [a_prokopenko_schema].[Payment_type] (ID, Name) VALUES (5, 'Unknown');
-INSERT INTO [a_prokopenko_schema].[Payment_type] (ID, Name) VALUES (6, 'Voided trip');
+INSERT INTO a_prokopenko_schema.Payment_type01 (ID, Name)
+SELECT 1, 'Credit card'
+UNION ALL
+SELECT 2, 'Cash'
+UNION ALL
+SELECT 3, 'No charge'
+UNION ALL
+SELECT 4, 'Dispute'
+UNION ALL
+SELECT 5, 'Unknown'
+UNION ALL
+SELECT 6, 'Voided trip';
+
