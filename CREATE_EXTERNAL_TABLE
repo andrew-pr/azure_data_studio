@@ -78,3 +78,70 @@ WITH
 	CLUSTERED COLUMNSTORE INDEX
 )
 AS SELECT * FROM [a_prokopenko_schema].[myexternal];
+
+Step 8. Created 3 tables
+Created table Vendor
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [a_prokopenko_schema].[Vendor]
+(
+	[ID] [int] NULL,
+	[Name] [varchar](50) NULL
+)
+WITH
+(
+	DISTRIBUTION = ROUND_ROBIN,
+	CLUSTERED COLUMNSTORE INDEX
+)
+GO
+INSERT INTO [a_prokopenko_schema].[Vendor] (ID, Name) VALUES (1, 'Creative Mobile Technologies, LLC');
+INSERT INTO [a_prokopenko_schema].[Vendor] (ID, Name) VALUES (2, 'VeriFone Inc');
+
+Created table RateCode
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [a_prokopenko_schema].[RateCode]
+(
+	[ID] [int] NULL,
+	[Name] [varchar](50) NULL
+)
+WITH
+(
+	DISTRIBUTION = ROUND_ROBIN,
+	CLUSTERED COLUMNSTORE INDEX
+)
+GO
+INSERT INTO [a_prokopenko_schema].[RateCode] (ID, Name) VALUES (1, 'Standard rate');
+INSERT INTO [a_prokopenko_schema].[RateCode] (ID, Name) VALUES (2, 'JFK');
+INSERT INTO [a_prokopenko_schema].[RateCode] (ID, Name) VALUES (3, 'Newark');
+INSERT INTO [a_prokopenko_schema].[RateCode] (ID, Name) VALUES (4, 'Nassau or Westchester');
+INSERT INTO [a_prokopenko_schema].[RateCode] (ID, Name) VALUES (5, 'Negotiated fare');
+INSERT INTO [a_prokopenko_schema].[RateCode] (ID, Name) VALUES (6, 'Group ride');
+
+Created table Payment_type
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [a_prokopenko_schema].[Payment_type]
+(
+	[ID] [int] NULL,
+	[Name] [varchar](50) NULL
+)
+WITH
+(
+	DISTRIBUTION = ROUND_ROBIN,
+	CLUSTERED COLUMNSTORE INDEX
+)
+GO
+INSERT INTO [a_prokopenko_schema].[Payment_type] (ID, Name) VALUES (1, 'Credit card');
+INSERT INTO [a_prokopenko_schema].[Payment_type] (ID, Name) VALUES (2, 'Cash');
+INSERT INTO [a_prokopenko_schema].[Payment_type] (ID, Name) VALUES (3, 'No charge');
+INSERT INTO [a_prokopenko_schema].[Payment_type] (ID, Name) VALUES (4, 'Dispute');
+INSERT INTO [a_prokopenko_schema].[Payment_type] (ID, Name) VALUES (5, 'Unknown');
+INSERT INTO [a_prokopenko_schema].[Payment_type] (ID, Name) VALUES (6, 'Voided trip');
