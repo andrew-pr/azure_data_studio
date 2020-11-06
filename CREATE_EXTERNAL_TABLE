@@ -1,0 +1,80 @@
+Step 1,2
+Added IP to Firewalls and virtual networks. Logged in Azure Data Studio as admin.
+
+Step 3
+Created login, schema, user
+CREATE LOGIN a_prokopenko
+    WITH PASSWORD = '112233aassdd!'
+GO
+CREATE SCHEMA [a_prokopenko_schema]
+GO
+CREATE USER [a_prokopenko] FOR LOGIN [a_prokopenko] WITH DEFAULT_SCHEMA=[a_prokopenko_schema]
+GO
+sys.sp_addrolemember @rolename = N'db_owner', @membername = N'a_prokopenko'
+GO
+
+Step4
+Uploaded yellow_tripdata_2020-01 to my blob
+
+Step 5
+Created external data source: created credential and external data source
+CREATE DATABASE SCOPED CREDENTIAL mystorage
+WITH IDENTITY= 'bigdatakyivstar',
+SECRET = '<storage_key>';
+
+CREATE EXTERNAL DATA SOURCE myazure
+WITH
+  ( LOCATION = 'wasbs://prokopenko@bigdatakyivstar.blob.core.windows.net/' ,
+    CREDENTIAL = mystorage,
+    TYPE = HADOOP
+  ) ;
+  
+  Step 6
+  Created external table: created file format and table
+  CREATE EXTERNAL FILE FORMAT myformat
+WITH (FORMAT_TYPE = DELIMITEDTEXT,
+      FORMAT_OPTIONS(
+          FIELD_TERMINATOR = ',',
+          STRING_DELIMITER = '"',
+          FIRST_ROW = 2, 
+          USE_TYPE_DEFAULT = True)
+)
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE EXTERNAL TABLE [a_prokopenko_schema].[myexternal]
+(
+    [VendorID] [int] NULL,
+    [tpep_pickup_datetime] [datetime] NOT NULL,
+    [tpep_dropoff_datetime] [datetime] NOT NULL,
+    [passenger_count] [int] NULL,
+    [trip_distance] [real] NOT NULL,
+    [RatecodeID] [int] NULL,
+    [store_and_fwd_flag] [char](1) NULL,
+    [PULocationID] [int] NOT NULL,
+    [DOLocationID] [int] NOT NULL,
+    [payment_type] [int] NULL,
+    [fare_amount] [money] NOT NULL,
+    [extra] [money] NOT NULL,
+    [mta_tax] [money] NOT NULL,
+    [tip_amount] [money] NOT NULL,
+    [tolls_amount] [money] NOT NULL,
+    [improvement_surcharge] [money] NOT NULL,
+    [total_amount] [money] NOT NULL,
+    [congestion_surcharge] [money] NOT NULL
+)
+WITH (DATA_SOURCE = [myazure],LOCATION = N'yellow_tripdata_2020-01.csv',FILE_FORMAT = [myformat], REJECT_TYPE = VALUE,REJECT_VALUE = 0)
+GO
+  
+Step 7
+Created hash-distributed table
+
+CREATE TABLE a_prokopenko_schema.fact_tripdata03
+WITH
+(
+	DISTRIBUTION = HASH ( [tpep_pickup_datetime] ),
+	CLUSTERED COLUMNSTORE INDEX
+)
+AS SELECT * FROM [a_prokopenko_schema].[myexternal];
