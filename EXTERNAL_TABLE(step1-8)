@@ -4,7 +4,7 @@ Added IP to Firewalls and virtual networks. Logged in Azure Data Studio as admin
 Step 3
 Created login, schema, user
 CREATE LOGIN a_prokopenko
-    WITH PASSWORD = '112233aassdd!'
+    WITH PASSWORD = '<PASSWORD>'
 GO
 CREATE SCHEMA [a_prokopenko_schema]
 GO
